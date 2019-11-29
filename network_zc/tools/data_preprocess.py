@@ -127,10 +127,10 @@ def dimensionless(training_data, di_or_de):
     return training_data
 
 
-def sequence_data(data, input_length=3, output_sequence=False, validation_split=10):
-    data_x = np.reshape([data[i: i + input_length] for i in range(data.shape[0] - input_length)],
-                        (-1, input_length)+data.shape[1:])    # shape (1000, 75, 1)
-    data_y = np.reshape(data[input_length:], (-1,)+data.shape[1:])
+def sequence_data(data, input_length=3, prediction_month=1, output_sequence=False, validation_split=10):
+    data_x = np.reshape([data[i: i + input_length] for i in range(data.shape[0]-input_length-(prediction_month-1))],
+                        (-1, input_length)+data.shape[1:])
+    data_y = np.reshape(data[input_length+prediction_month-1:], (-1,)+data.shape[1:])
     return data_x, data_y
 
 

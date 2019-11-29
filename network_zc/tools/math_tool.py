@@ -23,4 +23,8 @@ def pearson_distance(vector1, vector2):
 
 
 def calculate_rmse(y_true, y_pred):
+    if not isinstance(y_true, np.ndarray):
+        y_true = np.array(y_true)
+    if not isinstance(y_pred, np.ndarray):
+        y_pred = np.array(y_pred)
     return math.sqrt(np.sum((y_true-y_pred)**2)/y_true.size)

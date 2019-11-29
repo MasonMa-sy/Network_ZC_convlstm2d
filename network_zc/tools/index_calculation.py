@@ -11,15 +11,27 @@ def get_nino34(data_2d):
     for i in range(7, 13):
         for j in range(11, 20):
             nino3_temp += data_2d[i][j][0]
-    return nino3_temp/54
+    return nino3_temp / 54
 
 
 def get_nino34_from_data(file_num, month):
     nino3 = []
-    for i in range(file_num, file_num+month+1):
+    for i in range(file_num, file_num + month + 1):
         data = file_helper_unformatted.read_data_sstaha(i)
         nino3.append(get_nino34(data))
     return nino3
+
+
+def get_nino34_from_data_y(data_y):
+    nino = np.zeros(data_y.shape[0:3])
+    # print(nino.shape)
+    for i in range(7, 13):
+        for j in range(11, 20):
+            nino[0][i][j] = 1
+    for i in range(1, data_y.shape[0]):
+        nino[i] = nino[0]
+    # print(data_y[:, :, :, 0] * nino)
+    return np.sum(data_y[:, :, :, 0] * nino, axis=(1, 2))/54
 
 
 def plot_nino34():
@@ -48,4 +60,3 @@ def plot_nino34():
         # print(sumi)
     plt.plot(nino3)
     plt.show()
-

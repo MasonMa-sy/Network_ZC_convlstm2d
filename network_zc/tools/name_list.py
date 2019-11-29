@@ -2,7 +2,7 @@
 This script is for some parameter set.
 """
 # for model
-model_name = 'convlstm_model_dimensionless_his_1@test@best'
+model_name = 'convlstm_model_scnino_his_3@test'
 model_type = 'conv'
 # for retrain model, because ZC data and observation data are symmetrical with the equator
 is_retrain = False
@@ -12,11 +12,15 @@ continue_model_name = 'conv_model_dimensionless_1_historical_sc_small@best'
 # for ssim
 kernel_size = 7
 max_value = 10
-# for seasonal circle
-is_seasonal_circle = False
+# for seasonal circle input
+is_seasonal_circle = True
+# for nino index output
+is_nino_output = True
 # for time sequence
 is_sequence = True
-time_step = 3
+time_step = 3 if is_sequence else 0
+# for prediction month
+prediction_month = 3
 # for final essay
 is_best = True
 predict_file_dir = 'D:\\files\课题组\zc_network\zc_data\data_networks\\'
