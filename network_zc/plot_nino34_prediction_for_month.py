@@ -33,11 +33,15 @@ def mean_squared_error(y_true, y_pred):
     return K.mean(K.square(y_pred - y_true), axis=-1)
 
 
-model_name = name_list.model_name
+is_retrain = name_list.is_retrain
+if is_retrain:
+    model_name = name_list.retrain_model_name
+else:
+    model_name = name_list.model_name
 if name_list.is_best:
     model_name = file_helper_unformatted.find_model_best(model_name)
 model_type = name_list.model_type
-is_retrain = name_list.is_retrain
+
 is_seasonal_circle = name_list.is_seasonal_circle
 lrelu = lambda y: LeakyReLU(alpha=0.3)(y)
 # Load the model
@@ -81,8 +85,8 @@ month = 47
 # month = 124
 interval = 1
 prediction_month = name_list.prediction_month
-# directly_months = [3, 6, 9, 12]
-directly_months = [1, 2, 3, 4]
+directly_months = [3, 6, 9, 12]
+# directly_months = [1, 2, 3, 4]
 data_preprocess_method = name_list.data_preprocess_method
 is_sequence = name_list.is_sequence
 time_step = name_list.time_step

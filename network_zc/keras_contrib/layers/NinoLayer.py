@@ -31,6 +31,6 @@ def output_shape(input_shape):
     return (input_shape[0],) + (1,)
 
 
-def get_nino_layer():
-    layer = Lambda(function, output_shape)
+def get_nino_layer(name):
+    layer = Lambda(function, output_shape, name=name)
     return layer

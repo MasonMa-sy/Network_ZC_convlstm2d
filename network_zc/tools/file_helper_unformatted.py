@@ -354,6 +354,11 @@ def find_logs_final(filename):
     return file
 
 
+def find_logs_cross(filename):
+    file = '..\model\\cross_validation\\logs\\' + filename
+    return file
+
+
 def find_model_best(modelname):
     file = 'best\\' + modelname
     return file
@@ -361,8 +366,8 @@ def find_model_best(modelname):
 
 def exchange_rows(training_data):
     exchange_data = training_data.copy()
-    rows = training_data.shape[1]
     is_sequence = name_list.is_sequence
+    rows = training_data.shape[1] if is_sequence else training_data.shape[2]
     for i in range(rows):
         if not is_sequence:
             exchange_data[:, i, :, :] = training_data[:, rows-i-1, :, :]

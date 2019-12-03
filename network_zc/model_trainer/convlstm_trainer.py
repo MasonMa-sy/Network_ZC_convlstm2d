@@ -1,6 +1,38 @@
 """
 To train neural networks for zc model using convolution layers.
 Add a sinusoid with the period of a year as attribute to contain information about the seasonal cycle.
+Add a lambda layer to calculate nino index as a output.
+
+Model: "model_1"
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to
+==================================================================================================
+input_2 (InputLayer)            (None, 1)            0
+__________________________________________________________________________________________________
+input_1 (InputLayer)            (None, 3, 20, 27, 2) 0
+__________________________________________________________________________________________________
+embedding_1 (Embedding)         (None, 1, 25920)     311040      input_2[0][0]
+__________________________________________________________________________________________________
+conv_lst_m2d_1 (ConvLSTM2D)     (None, 3, 20, 27, 16 10432       input_1[0][0]
+__________________________________________________________________________________________________
+reshape_1 (Reshape)             (None, 3, 20, 27, 16 0           embedding_1[0][0]
+__________________________________________________________________________________________________
+concatenate_1 (Concatenate)     (None, 3, 20, 27, 32 0           conv_lst_m2d_1[0][0]
+                                                                 reshape_1[0][0]
+__________________________________________________________________________________________________
+conv_lst_m2d_2 (ConvLSTM2D)     (None, 3, 20, 27, 32 73856       concatenate_1[0][0]
+__________________________________________________________________________________________________
+conv_lst_m2d_3 (ConvLSTM2D)     (None, 3, 20, 27, 32 73856       conv_lst_m2d_2[0][0]
+__________________________________________________________________________________________________
+conv_lst_m2d_4 (ConvLSTM2D)     (None, 20, 27, 2)    2456        conv_lst_m2d_3[0][0]
+__________________________________________________________________________________________________
+lambda_1 (Lambda)               (None, 1)            0           conv_lst_m2d_4[0][0]
+==================================================================================================
+Total params: 471,640
+Trainable params: 471,640
+Non-trainable params: 0
+__________________________________________________________________________________________________
+
 """
 # Third-party libraries
 from keras.activations import relu
@@ -24,10 +56,14 @@ from network_zc.tools import file_helper_unformatted, name_list, data_preprocess
 model_name = name_list.model_name
 data_preprocess_method = name_list.data_preprocess_method
 
-training_start = 0
-training_num = 464
+if name_list.data_file == 'data_historical':
+    training_start = 0
+    training_num = 464
+elif name_list.data_file == 'data_nature2':
+    training_start = 60
+    training_num = 12000
 testing_num = 0
-epochs = 1000
+epochs = 2000
 batch_size = 32
 time_step = name_list.time_step
 prediction_month = name_list.prediction_month
@@ -101,7 +137,7 @@ if __name__ == '__main__':
 
     # tesorboard = TensorBoard('..\..\model\\tensorboard\\' + model_name)
     save_best = ModelCheckpoint('..\..\model\\best\\' + model_name + '.h5',
-                                monitor='val_conv_lst_m2d_4_root_mean_squared_error',
+                                monitor='val_loss',
                                 verbose=1, save_best_only=True, mode='min', period=1)
     train_hist = model.fit([data_x, data_sc], [data_y, data_y_nino], batch_size=batch_size, epochs=epochs, verbose=2,
                            callbacks=[save_best], validation_split=0.1)

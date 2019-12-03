@@ -2,11 +2,12 @@
 This script is for some parameter set.
 """
 # for model
-model_name = 'convlstm_model_scnino_his_3@test'
+# model_name = 'convlstm_model_scnino_zc_1@test2'
+model_name = 'convlstm_model_scnino_hist_1@test1'
 model_type = 'conv'
 # for retrain model, because ZC data and observation data are symmetrical with the equator
 is_retrain = False
-retrain_model_name = 'conv_model_dimensionless_1_ZC_sc_1_to_historical_5'
+retrain_model_name = 'convlstm_model_scnino_zc_to_hist_1@test'
 # for continue model
 continue_model_name = 'conv_model_dimensionless_1_historical_sc_small@best'
 # for ssim
@@ -20,7 +21,7 @@ is_nino_output = True
 is_sequence = True
 time_step = 3 if is_sequence else 0
 # for prediction month
-prediction_month = 3
+prediction_month = 1
 # for final essay
 is_best = True
 predict_file_dir = 'D:\\files\课题组\zc_network\zc_data\data_networks\\'
